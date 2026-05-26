@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>DATA INPUT UNLOADING</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+
+  -webkit-touch-callout:none;
+}
+
+body{
+  background:#0F1115;
+  padding:14px;
+  color:#D8FFD8;
+  touch-action:manipulation;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+}
+
+.card{
+  background:#171A21;
+  border-radius:24px;
+  padding:18px;
+  border:1px solid #222831;
+
+  box-shadow:
+  0 0 20px rgba(0,255,120,0.08),
+  0 0 40px rgba(255,0,80,0.05);
+}
+
+.title{
+  text-align:center;
+  font-size:24px;
+  font-weight:900;
+  color:#00FF88;
+  letter-spacing:1px;
+}
+
+.sub{
+  text-align:center;
+  margin-top:6px;
+  margin-bottom:22px;
+  color:#8B949E;
+  font-size:11px;
+  letter-spacing:2px;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.form-group{
+  margin-bottom:14px;
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  font-size:11px;
+  font-weight:bold;
+  color:#9CFFA7;
+  letter-spacing:1px;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+.input{
+  width:100%;
+  height:50px;
+  border:none;
+  border-radius:15px;
+  background:#11151C;
+  padding:0 14px;
+  font-size:13px;
+  color:#E8FFE8;
+  border:1px solid #2A313C;
+  text-transform:uppercase;
+}
+
+.input:focus{
+  outline:none;
+  border:2px solid #00FF88;
+  background:#0F1319;
+}
+
+.dropdown{
+  position:absolute;
+  top:56px;
+  left:0;
+  width:100%;
+  background:#1B2029;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  display:none;
+  z-index:999;
+  max-height:180px;
+  overflow-y:auto;
+  border:1px solid #2A313C;
+}
+
+.dropdown-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+
+  padding:12px 14px;
+  cursor:pointer;
+  transition:0.2s;
+  text-transform:uppercase;
+  color:#D8FFD8;
+  font-size:13px;
+}
+
+.dropdown-item:hover{
+  background:#1F2630;
+}
+
+.dropdown-text{
+  flex:1;
+}
+
+.delete-btn{
+  width:24px;
+  height:24px;
+  border:none;
+  border-radius:50%;
+  background:#FF3B3B;
+  color:#FFF;
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.delete-btn:hover{
+  opacity:0.8;
+}
+
+select.input{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+}
+
+.upload-box{
+  border:2px dashed #2F3844;
+  border-radius:16px;
+  padding:16px;
+  background:#11151C;
+}
+
+.preview{
+  margin-top:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.preview img{
+  width:75px;
+  height:75px;
+  object-fit:cover;
+  border-radius:12px;
+  border:1px solid #2F3844;
+}
+
+.btn{
+  width:100%;
+  height:54px;
+  border:none;
+  border-radius:16px;
+
+  background:linear-gradient(
+  135deg,
+  #00FF88,
+  #00CC6A
+  );
+
+  color:#000;
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  letter-spacing:1px;
+}
+
+.result{
+  margin-top:18px;
+  background:#11151C;
+  border-radius:16px;
+  padding:16px;
+  white-space:pre-line;
+  font-size:13px;
+  line-height:1.45;
+  text-transform:uppercase;
+  border:1px solid #2A313C;
+  color:#D8FFD8;
+}
+
+.footer{
+  text-align:center;
+  margin-top:20px;
+  color:#7E8793;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <div class="title">
+      DATA INPUT UNLOADING
+    </div>
+
+    <div class="sub">
+      FAST DATA ENTRY
+    </div>
+
+    <!-- FROM TO -->
+    <div class="grid2">
+
+      <!-- FROM -->
+      <div class="form-group">
+
+        <label>FROM</label>
+
+        <div class="input-wrap">
+
+          <input type="text"
+                 class="input auto-save"
+                 id="from"
+                 data-key="fromData"
+                 autocomplete="off"
+                 placeholder="INPUT FROM">
+
+          <div class="dropdown"
+               id="fromDropdown"></div>
+
+        </div>
+
+      </div>
+
+      <!-- TO -->
+      <div class="form-group">
+
+        <label>TO</label>
+
+        <div class="input-wrap">
+
+          <input type="text"
+                 class="input auto-save"
+                 id="to"
+                 data-key="toData"
+                 autocomplete="off"
+                 placeholder="INPUT TO">
+
+          <div class="dropdown"
+               id="toDropdown"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PHASE + JENIS -->
+    <div class="grid2">
+
+      <div class="form-group">
+
+        <label>NO. PHASE</label>
+
+        <input type="text"
+               class="input"
+               id="phase"
+               autocomplete="off"
+               placeholder="INPUT NO. PHASE">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>JENIS PHASE</label>
+
+        <select class="input"
+                id="jenis">
+
+          <option>AWB</option>
+          <option>NON AWB</option>
+          <option>LIQUID</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- DRIVER -->
+    <div class="form-group">
+
+      <label>NAMA DRIVER</label>
+
+      <div class="input-wrap">
+
+        <input type="text"
+               class="input auto-save"
+               id="driver"
+               data-key="driverData"
+               autocomplete="off"
+               placeholder="INPUT NAMA DRIVER">
+
+        <div class="dropdown"
+             id="driverDropdown"></div>
+
+      </div>
+
+    </div>
+
+    <!-- NOPOL -->
+    <div class="form-group">
+
+      <label>NOMOR POLISI</label>
+
+      <div class="input-wrap">
+
+        <input type="text"
+               class="input auto-save"
+               id="nopol"
+               data-key="nopolData"
+               autocomplete="off"
+               placeholder="INPUT NOPOL">
+
+        <div class="dropdown"
+             id="nopolDropdown"></div>
+
+      </div>
+
+    </div>
+
+    <!-- SEAL -->
+    <div class="form-group">
+
+      <label>NOMOR SEAL</label>
+
+      <input type="text"
+             class="input"
+             id="seal"
+             autocomplete="off"
+             placeholder="INPUT NOMOR SEAL">
+
+    </div>
+
+    <!-- TOTAL COLKY -->
+    <div class="form-group">
+
+      <label>TOTAL COLLY</label>
+
+      <input type="number"
+             class="input"
+             id="colly"
+             autocomplete="off"
+             placeholder="INPUT TOTAL COLLY">
+
+    </div>
+
+    <!-- WAKTU -->
+    <div class="form-group">
+
+      <label>WAKTU UNLOADING</label>
+
+      <input type="datetime-local"
+             class="input"
+             id="waktu">
+
+    </div>
+
+    <!-- FOTO -->
+    <div class="form-group">
+
+      <label>UPLOAD FOTO</label>
+
+      <div class="upload-box">
+
+        <input type="file"
+               id="foto"
+               multiple
+               accept="image/*">
+
+        <div class="preview"
+             id="preview"></div>
+
+      </div>
+
+    </div>
+
+    <button class="btn"
+        style="
+        margin-bottom:12px;
+        background:linear-gradient(
+        135deg,
+        #00C2FF,
+        #007BFF
+        );
+        color:#FFF;
+        "
+        onclick="simpanSemuaData()">
+
+  SIMPAN DATA
+
+</button>
+
+    <!-- BUTTON WA -->
+<button class="btn"
+        onclick="kirimWA()">
+
+  KIRIM KE WHATSAPP
+
+</button>
+
+<!-- DONE -->
+<div class="form-group"
+     style="margin-top:18px;">
+
+  <label>WAKTU DONE UNLOADING</label>
+
+  <input type="datetime-local"
+         class="input"
+         id="doneWaktu">
+
+</div>
+
+<!-- BUTTON DONE -->
+<button class="btn"
+        style="
+        margin-top:12px;
+        background:linear-gradient(
+        135deg,
+        #FFB300,
+        #FF8800
+        );
+        color:#000;
+        "
+        onclick="kirimDoneWA()">
+
+  KIRIM DONE UNLOADING
+
+</button>
+
+<!-- BUTTON RESET -->
+<button class="btn"
+        style="
+        margin-top:12px;
+        background:linear-gradient(
+        135deg,
+        #FF3B3B,
+        #D60000
+        );
+        color:#FFF;
+        "
+        onclick="resetForm()">
+
+  RESET DATA
+
+</button>
+
+<!-- RESULT -->
+<div class="result"
+     id="hasil"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+
+  © 2026 ZULFAHMI AFNULA • UNLOADING DATA INPUT SYSTEM  
+  ALL RIGHTS RESERVED
+
+</div>
+
+  </div>
+
+</div>
+
+<!-- ================= SUPABASE ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* ================= SUPABASE CONFIG ================= */
+
+const SUPABASE_URL =
+'https://wepqievfgfqsoilynrhc.supabase.co';
+
+const SUPABASE_KEY =
+'sb_publishable_AUDqRGYqJi1pA7Y_QOIa-A_bIz-_zI1';
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+/* ================= GLOBAL SAFETY ================= */
+
+const CACHE_MASTER = {};
+const REQUEST_LOCK = {};
+const MAX_LIMIT = 200;
+
+let DATA_SUDAH_DISIMPAN = false;
+
+function safeErrorLog(err, context='') {
+
+  console.log(
+  'SUPABASE ERROR:',
+  context,
+  err
+  );
+
+}
+
+/* ================= ANIMASI TOMBOL ================= */
+
+document.querySelectorAll('.btn')
+.forEach(btn => {
+
+  btn.style.transition =
+  'transform 0.08s ease, opacity 0.08s ease';
+
+  btn.style.webkitTapHighlightColor =
+  'transparent';
+
+  btn.style.outline =
+  'none';
+
+  btn.addEventListener(
+  'touchstart',
+  () => {
+
+    btn.style.transform =
+    'scale(0.94)';
+
+    btn.style.opacity =
+    '0.85';
+
+  }
+  );
+
+  btn.addEventListener(
+  'touchend',
+  () => {
+
+    btn.style.transform =
+    'scale(1)';
+
+    btn.style.opacity =
+    '1';
+
+  }
+  );
+
+  btn.addEventListener(
+  'touchcancel',
+  () => {
+
+    btn.style.transform =
+    'scale(1)';
+
+    btn.style.opacity =
+    '1';
+
+  }
+  );
+
+});
+
+/* ================= BLOK COPY PASTE ================= */
+
+document.addEventListener(
+'copy',
+e => e.preventDefault()
+);
+
+document.addEventListener(
+'cut',
+e => e.preventDefault()
+);
+
+document.addEventListener(
+'paste',
+e => e.preventDefault()
+);
+
+document.addEventListener(
+'contextmenu',
+e => e.preventDefault()
+);
+
+/* ================= OPTIMIZED AUTO SAVE ================= */
+
+const autoInputs =
+document.querySelectorAll('.auto-save');
+
+autoInputs.forEach(input => {
+
+  const key =
+  input.dataset.key;
+
+  const dropdown =
+  document.getElementById(
+  input.id + 'Dropdown'
+  );
+
+  async function loadDropdown(filter='') {
+
+    if (REQUEST_LOCK[key]) return;
+
+    REQUEST_LOCK[key] = true;
+
+    try {
+
+      dropdown.innerHTML = '';
+
+      if (!CACHE_MASTER[key]) {
+
+        const {
+          data,
+          error
+        } =
+        await supabaseClient
+        .from('master_data')
+        .select('value,kategori')
+        .eq('kategori', key)
+        .order('id',
+        { ascending:false })
+        .limit(MAX_LIMIT);
+
+        if (error) {
+
+          safeErrorLog(
+          error,
+          'load master_data'
+          );
+
+          dropdown.style.display =
+          'none';
+
+          return;
+
+        }
+
+        CACHE_MASTER[key] =
+        data || [];
+
+      }
+
+      let hasil =
+      CACHE_MASTER[key]
+      .map(x => x.value);
+
+      hasil =
+      hasil.filter(item =>
+
+        item
+        .toLowerCase()
+        .includes(
+        filter.toLowerCase()
+        )
+
+      );
+
+      if (hasil.length === 0) {
+
+        dropdown.style.display =
+        'none';
+
+        return;
+
+      }
+
+      dropdown.style.display =
+      'block';
+
+      hasil
+      .slice(0,30)
+      .forEach(item => {
+
+        const div =
+        document.createElement('div');
+
+        div.className =
+        'dropdown-item';
+
+        const text =
+        document.createElement('div');
+
+        text.className =
+        'dropdown-text';
+
+        text.innerText =
+        item;
+
+        text.onclick = () => {
+
+          input.value =
+          item.toUpperCase();
+
+          dropdown.style.display =
+          'none';
+
+          updatePreview();
+
+        };
+
+        const hapus =
+        document.createElement('button');
+
+        hapus.className =
+        'delete-btn';
+
+        hapus.innerText =
+        '×';
+
+        hapus.onclick =
+        async (e) => {
+
+          e.stopPropagation();
+
+          const { error } =
+          await supabaseClient
+          .from('master_data')
+          .delete()
+          .eq('kategori', key)
+          .eq('value', item);
+
+          if (!error) {
+
+            CACHE_MASTER[key] =
+            CACHE_MASTER[key]
+            .filter(x =>
+              x.value !== item
+            );
+
+          }
+
+          loadDropdown(filter);
+
+        };
+
+        div.appendChild(text);
+        div.appendChild(hapus);
+
+        dropdown.appendChild(div);
+
+      });
+
+    } finally {
+
+      REQUEST_LOCK[key] =
+      false;
+
+    }
+
+  }
+
+  input.addEventListener(
+  'focus',
+  () => loadDropdown()
+  );
+
+  input.addEventListener(
+  'keyup',
+  () => {
+
+    input.value =
+    input.value.toUpperCase();
+
+    clearTimeout(input._t);
+
+    input._t =
+    setTimeout(() => {
+
+      loadDropdown(
+      input.value
+      );
+
+      updatePreview();
+
+    },150);
+
+  });
+
+  input.addEventListener(
+  'blur',
+  async () => {
+
+    setTimeout(() => {
+
+      dropdown.style.display =
+      'none';
+
+    },200);
+
+    const value =
+    input.value
+    .trim()
+    .toUpperCase();
+
+    if (!value) return;
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+    .from('master_data')
+    .select('value')
+    .eq('kategori', key)
+    .eq('value', value)
+    .limit(1);
+
+    if (
+      !error &&
+      (
+      !data ||
+      data.length === 0
+      )
+    ) {
+
+      const {
+        error:insertError
+      } =
+      await supabaseClient
+      .from('master_data')
+      .insert([{
+
+        kategori:key,
+        value:value
+
+      }]);
+
+      if (!insertError) {
+
+        CACHE_MASTER[key]
+        ?.push({
+
+          value
+
+        });
+
+      }
+
+    }
+
+  });
+
+});
+
+/* ================= NOPOL FORMAT ================= */
+
+const nopolInput =
+document.getElementById(
+'nopol'
+);
+
+nopolInput.addEventListener(
+'input',
+() => {
+
+  let value =
+  nopolInput.value
+  .toUpperCase()
+  .replace(
+  /[^A-Z0-9]/g,
+  ''
+  );
+
+  const match =
+  value.match(
+  /^([A-Z]{1,2})(\d{0,4})([A-Z]{0,3})$/
+  );
+
+  if (match) {
+
+    let hasil =
+    match[1] || '';
+
+    if (match[2]) {
+
+      hasil +=
+      ' ' + match[2];
+
+    }
+
+    if (match[3]) {
+
+      hasil +=
+      ' ' + match[3];
+
+    }
+
+    nopolInput.value =
+    hasil;
+
+  } else {
+
+    nopolInput.value =
+    value;
+
+  }
+
+});
+
+/* ================= FOTO ================= */
+
+const foto =
+document.getElementById(
+'foto'
+);
+
+const preview =
+document.getElementById(
+'preview'
+);
+
+let filesDipilih = [];
+
+foto.addEventListener(
+'change',
+function () {
+
+  filesDipilih =
+  [...this.files];
+
+  preview.innerHTML =
+  '';
+
+  filesDipilih.forEach(file => {
+
+    const reader =
+    new FileReader();
+
+    reader.onload =
+    function (e) {
+
+      const img =
+      document.createElement('img');
+
+      img.src =
+      e.target.result;
+
+      preview.appendChild(img);
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+});
+
+/* ================= FORMAT TANGGAL ================= */
+
+function formatTanggal(value) {
+
+  if (!value) return '';
+
+  const date =
+  new Date(value);
+
+  return (
+  `${String(date.getDate()).padStart(2,'0')}-` +
+  `${String(date.getMonth()+1).padStart(2,'0')}-` +
+  `${date.getFullYear()} ` +
+  `${String(date.getHours()).padStart(2,'0')}:` +
+  `${String(date.getMinutes()).padStart(2,'0')}`
+  );
+
+}
+
+/* ================= PREVIEW ================= */
+
+const semuaInput =
+document.querySelectorAll(
+'input,select'
+);
+
+semuaInput.forEach(el => {
+
+  el.addEventListener(
+  'input',
+  () => {
+
+    if (
+      el.type !==
+      'datetime-local'
+    ) {
+
+      el.value =
+      el.value.toUpperCase();
+
+    }
+
+    DATA_SUDAH_DISIMPAN =
+    false;
+
+    updatePreview();
+
+  });
+
+});
+
+function updatePreview() {
+
+  const hasil =
+`${from.value} 🛻 => ${to.value}
+PHASE ${phase.value} ${jenis.value}
+
+DRIVER : ${driver.value}
+NOPOL : ${nopol.value}
+NO SEAL : ${seal.value}
+TOTAL COLLY : ${colly.value}
+WAKTU UNLOADING : ${formatTanggal(waktu.value)}`;
+
+  document.getElementById(
+  'hasil'
+  ).innerText =
+  hasil;
+
+}
+
+updatePreview();
+
+/* ================= SIMPAN DATA ================= */
+
+async function simpanDatabase() {
+
+  const dataInsert = {
+
+    from_data:
+    from.value,
+
+    to_data:
+    to.value,
+
+    phase:
+    phase.value,
+
+    jenis:
+    jenis.value,
+
+    driver:
+    driver.value,
+
+    nopol:
+    nopol.value,
+
+    seal:
+    seal.value,
+
+    colly:
+    colly.value,
+
+    waktu:
+    waktu.value
+
+  };
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+  .from('unloading_data')
+  .insert([dataInsert]);
+
+  if (error) {
+
+    safeErrorLog(
+    error,
+    'unloading_data insert'
+    );
+
+    alert(
+    'GAGAL SIMPAN DATA'
+    );
+
+    return;
+
+  }
+
+  DATA_SUDAH_DISIMPAN =
+  true;
+
+  alert(
+  'DATA BERHASIL DISIMPAN'
+  );
+
+}
+
+/* ================= WA ================= */
+
+async function kirimWA() {
+
+  if (
+    !DATA_SUDAH_DISIMPAN
+  ) {
+
+    alert(
+    'SIMPAN DATA DULU'
+    );
+
+    return;
+
+  }
+
+  const text =
+  document.getElementById(
+  'hasil'
+  ).innerText;
+
+  const url =
+  `https://wa.me/?text=${encodeURIComponent(text)}`;
+
+  window.open(
+  url,
+  '_blank'
+  );
+
+}
+
+/* ================= DONE ================= */
+
+async function kirimDoneWA() {
+
+  if (
+    !DATA_SUDAH_DISIMPAN
+  ) {
+
+    alert(
+    'SIMPAN DATA DULU'
+    );
+
+    return;
+
+  }
+
+  const doneWaktu =
+  document.getElementById(
+  'doneWaktu'
+  ).value;
+
+  const pesan =
+`DONE UNLOADING
+
+PHASE : ${phase.value}
+DRIVER : ${driver.value}
+NOPOL : ${nopol.value}
+
+WAKTU DONE :
+${formatTanggal(doneWaktu)}`;
+
+  const { error } =
+  await supabaseClient
+  .from('done_unloading')
+  .insert([{
+
+    phase:
+    phase.value,
+
+    driver:
+    driver.value,
+
+    nopol:
+    nopol.value,
+
+    waktu_done:
+    doneWaktu
+
+  }]);
+
+  if (error) {
+
+    safeErrorLog(
+    error,
+    'done_unloading insert'
+    );
+
+    alert(
+    'GAGAL SIMPAN DONE'
+    );
+
+    return;
+
+  }
+
+  const url =
+  `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+
+  window.open(
+  url,
+  '_blank'
+  );
+
+}
+
+/* ================= RESET ================= */
+
+function resetForm() {
+
+  if (
+    !confirm(
+    'RESET SEMUA DATA ?'
+    )
+  ) return;
+
+  from.value = '';
+  to.value = '';
+  phase.value = '';
+  jenis.selectedIndex = 0;
+  driver.value = '';
+  nopol.value = '';
+  seal.value = '';
+  colly.value = '';
+  waktu.value = '';
+  doneWaktu.value = '';
+
+  foto.value = '';
+
+  filesDipilih = [];
+
+  preview.innerHTML = '';
+
+  DATA_SUDAH_DISIMPAN =
+  false;
+
+  updatePreview();
+
+}
+
+</script>
+
+</body>
+</html>
